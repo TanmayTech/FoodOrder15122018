@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SendGrid.Helpers.Mail;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -18,6 +19,40 @@ namespace OMS.Web
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            // Clears all previously registered view engines.
+            ViewEngines.Engines.Clear();
+
+            // Registers our Razor C# specific view engine.
+            // This can also be registered using dependency injection through the new IDependencyResolver interface.
+            ViewEngines.Engines.Add(new RazorViewEngine());
+        }
+
+        protected void Application_Error()
+        {
+            try
+            {
+                var lastException = Server.GetLastError();
+
+                var msg = new SendGridMessage()
+                {
+                    Subject = "Error Occcured while processng your request",
+                    HtmlContent = lastException.ToString()
+                };
+                msg.AddTo(new EmailAddress("tanmay.mule+OMSerror@gmail.com", "OMS Error"));
+
+                Helpers.EmailHelper.SendMail(msg);
+            }
+            catch
+            {
+                //Don't put anything in catch
+            }
+
+        }
+
+        private string GetBrowserCapabilites()
+        {
+            HttpBrowserCapabilities bc = new HttpBrowserCapabilities();
+            return bc.Browser;
         }
     }
 }
