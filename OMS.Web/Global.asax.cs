@@ -48,7 +48,7 @@ namespace OMS.Web
                     Subject = "Error Occcured while processng your request",
                     HtmlContent = lastException.ToString()
                 };
-                msg.AddTo(new EmailAddress("tanmay.mule+OMSerror@gmail.com", "OMS Error"));
+                msg.AddTo(new EmailAddress("tanmaytechbiz+OMSError@gmail.com", "OMS Error"));
 
                 Helpers.EmailHelper.SendMail(msg);
             }
@@ -61,8 +61,37 @@ namespace OMS.Web
 
         private string GetBrowserCapabilites()
         {
-            HttpBrowserCapabilities bc = new HttpBrowserCapabilities();
-            return bc.Browser;
+            string browserDetails = string.Empty;
+            try
+            {
+                browserDetails =
+                    "Url = " + Request.Url.AbsoluteUri + "<br>" +
+                    "Client IP = " + Request.UserHostAddress + " (" + Request.UserHostName + ")<br>";
+
+                HttpBrowserCapabilities browser = HttpContext.Current.Request.Browser;
+                browserDetails +=
+                "Name = " + browser.Browser + "<br>"
+                + "Type = " + browser.Type + "<br>"
+                + "Version = " + browser.Version + "<br>"
+                + "Major Version = " + browser.MajorVersion + "<br>"
+                + "Minor Version = " + browser.MinorVersion + "<br>"
+                + "Platform = " + browser.Platform + "<br>"
+                + "Is Beta = " + browser.Beta + "<br>"
+                + "Is Crawler = " + browser.Crawler + "<br>"
+                + "Is AOL = " + browser.AOL + "<br>"
+                + "Is Win16 = " + browser.Win16 + "<br>"
+                + "Is Win32 = " + browser.Win32 + "<br>"
+                + "Supports Cookies = " + browser.Cookies + "<br>"
+                + "Supports JavaScript = " + "<br>" +
+                browser.EcmaScriptVersion.ToString() + "<br>"
+                + "Supports JavaScript Version = " +
+                browser["JavaScriptVersion"];
+            }
+            catch
+            {
+
+            }
+            return browserDetails;
         }
     }
 }

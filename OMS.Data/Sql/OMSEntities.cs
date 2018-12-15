@@ -10,8 +10,8 @@ namespace OMS.Data.Sql
     public class OMSEntities : myDataBaseEntities
     {
         public OMSEntities()
-        {
-            this.Configuration.LazyLoadingEnabled = false;
+        {            
+            Configuration.LazyLoadingEnabled = false;
         }
     }
 }
