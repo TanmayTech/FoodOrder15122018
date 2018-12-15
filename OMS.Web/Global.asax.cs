@@ -25,6 +25,16 @@ namespace OMS.Web
             // Registers our Razor C# specific view engine.
             // This can also be registered using dependency injection through the new IDependencyResolver interface.
             ViewEngines.Engines.Add(new RazorViewEngine());
+
+            //Ignored Reference Loop Handling to run EF code properly
+            HttpConfiguration config = GlobalConfiguration.Configuration;
+
+            config.Formatters.JsonFormatter
+                        .SerializerSettings
+                        .ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+
+            config.Formatters
+                .Remove(GlobalConfiguration.Configuration.Formatters.XmlFormatter);
         }
 
         protected void Application_Error()

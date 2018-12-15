@@ -25,6 +25,14 @@ namespace OMS.Web
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            //config.Routes.MapHttpRoute(
+            //    name: "ApiWithName",
+            //    routeTemplate: "api/{controller}/{action}/{id}",
+            //    defaults: null,
+            //    constraints: new { name = @"^[a-z]+$" }
+
+            //    );
         }
     }
 }
